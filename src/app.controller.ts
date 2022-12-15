@@ -1,3 +1,10 @@
+/*
+ * @Descripttion : 控制器文件，可以简单理解为路由文件
+ * @Author       : wuhaidong
+ * @Date         : 2022-12-15 17:14:31
+ * @LastEditors  : wuhaidong
+ * @LastEditTime : 2022-12-15 20:49:15
+ */
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 
