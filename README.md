@@ -1,11 +1,11 @@
 <!--
- * @Descripttion : 
+ * @Descripttion :
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2022-12-15 20:45:15
+ * @LastEditTime : 2023-04-07 15:17:48
 -->
-  
+
 ## Installation
 
 ```bash
@@ -38,14 +38,17 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-
 ### nest g
+
 ```bash
+# 创建一个控制器和该控制器的单元测试文件
+nest g co posts
+
 # module
 nest g module gir
 
 # controller
-nest g controller girl --no-spec 
+nest g controller girl --no-spec
 
 # service**
 nest g service girl --no-spec
@@ -59,6 +62,7 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 - Author - [hayden](https://github.com/wuhaidong-me)
 - Website - [https://nestjs.com](https://nestjs.com/)
+
 ## License
 
 Nest is [MIT licensed](LICENSE).

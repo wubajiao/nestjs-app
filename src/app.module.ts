@@ -7,9 +7,10 @@
  */
 import { Module } from '@nestjs/common';
 import { GirlModule } from './girl/girl.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [GirlModule],
+  imports: [GirlModule, UserModule],
   controllers: [],
   providers: [],
 })

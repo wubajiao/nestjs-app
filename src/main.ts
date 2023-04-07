@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2022-12-15 20:40:49
+ * @LastEditTime : 2023-04-05 21:22:45
  */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
@@ -11,6 +11,6 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('/api'); // 设置全局前缀
-  await app.listen(3000);
+  await app.listen(4000);
 }
 bootstrap();
