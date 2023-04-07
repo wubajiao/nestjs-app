@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-07 15:17:48
+ * @LastEditTime : 2023-04-07 15:33:49
 -->
 
 ## Installation
@@ -39,6 +39,8 @@ $ npm run test:cov
 ```
 
 ### nest g
+
+#### 可以创建模块、过滤器、拦截器、中间件
 
 ```bash
 # 创建一个控制器和该控制器的单元测试文件
