@@ -3,12 +3,19 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 20:53:45
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-07 14:58:53
+ * @LastEditTime : 2023-04-07 16:50:28
  */
 import { Injectable } from '@nestjs/common';
+import { Like, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Girl } from './entities/girl.entity';
 
 @Injectable()
 export class GirlService {
+  constructor(
+    @InjectRepository(Girl) private readonly girl: Repository<Girl>,
+  ) {}
+
   getGirls() {
     return {
       code: 0,
@@ -16,12 +23,15 @@ export class GirlService {
       msg: '请求女孩列表成功',
     };
   }
+
+  // 新增
   addGirl() {
-    return {
-      code: 0,
-      data: { id: 1, name: '小绿', age: 20 },
-      msg: '新增成功！',
-    };
+    const data = new Girl();
+    data.name = '大梨';
+    data.age = 25;
+    data.skill = '精油按摩,日式按摩';
+
+    return this.girl.save(data);
   }
 
   deleteGirl() {
