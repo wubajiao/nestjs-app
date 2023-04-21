@@ -3,9 +3,9 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 20:51:25
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-07 16:55:57
+ * @LastEditTime : 2023-04-21 11:43:22
  */
-import { Controller, Delete, Get, Post, Put } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { GirlService } from './girl.service';
 
 @Controller('girl')
@@ -21,13 +21,15 @@ export class GirlController {
     return this.girlService.addGirl();
   }
 
-  @Put('/:id')
-  updateGirl() {
-    return 'update';
+  @Put('/update/:id')
+  updateGirl(@Param() params: any) {
+    const { id } = params;
+    return this.girlService.updateGirl(id);
   }
 
   @Delete('delete/:id')
-  deleteGirl() {
-    return this.girlService.deleteGirl();
+  deleteGirl(@Param() params: any) {
+    const { id } = params;
+    return this.girlService.deleteGirl(id);
   }
 }

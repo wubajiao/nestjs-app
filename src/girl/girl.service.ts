@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 20:53:45
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-07 16:50:28
+ * @LastEditTime : 2023-04-17 17:55:38
  */
 import { Injectable } from '@nestjs/common';
 import { Like, Repository } from 'typeorm';
@@ -34,11 +34,16 @@ export class GirlService {
     return this.girl.save(data);
   }
 
-  deleteGirl() {
-    return {
-      code: 0,
-      data: true,
-      msg: '删除成功！',
-    };
+  // 修改
+  updateGirl(id: string) {
+    const data = new Girl();
+    data.name = '小绿';
+    data.age = 20;
+    return this.girl.update(id, data);
+  }
+
+  // 删除
+  deleteGirl(id: string) {
+    return this.girl.delete(id);
   }
 }
