@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 20:53:45
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-17 17:55:38
+ * @LastEditTime : 2023-04-25 16:31:33
  */
 import { Injectable } from '@nestjs/common';
 import { Like, Repository } from 'typeorm';
@@ -16,12 +16,18 @@ export class GirlService {
     @InjectRepository(Girl) private readonly girl: Repository<Girl>,
   ) {}
 
+  // 列表
   getGirls() {
-    return {
-      code: 0,
-      data: ['翠花', '小红', '大丫'],
-      msg: '请求女孩列表成功',
-    };
+    return this.girl.find();
+  }
+
+  // 根据名字查出数据
+  findGirlByName(name: string) {
+    return this.girl.find({
+      where: {
+        name: Like(`%${name}%`),
+      },
+    });
   }
 
   // 新增

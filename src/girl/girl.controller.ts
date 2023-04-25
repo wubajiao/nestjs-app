@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 20:51:25
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-21 11:43:22
+ * @LastEditTime : 2023-04-21 12:03:12
  */
 import { Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { GirlService } from './girl.service';
@@ -16,7 +16,13 @@ export class GirlController {
     return this.girlService.getGirls();
   }
 
-  @Post('add')
+  @Get('/findGirlByName/:name')
+  findGirlByName(@Param() params: any) {
+    const { name } = params;
+    return this.girlService.findGirlByName(name);
+  }
+
+  @Post('/add')
   addGirl() {
     return this.girlService.addGirl();
   }
@@ -27,7 +33,7 @@ export class GirlController {
     return this.girlService.updateGirl(id);
   }
 
-  @Delete('delete/:id')
+  @Delete('/delete/:id')
   deleteGirl(@Param() params: any) {
     const { id } = params;
     return this.girlService.deleteGirl(id);
