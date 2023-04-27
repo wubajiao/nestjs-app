@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2022-12-15 20:49:15
+ * @LastEditTime : 2023-04-27 16:56:14
  */
 import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';

@@ -3,11 +3,12 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-27 15:31:22
+ * @LastEditTime : 2023-04-27 16:11:37
  */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cors from 'cors';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { HttpExceptionFilter } from './core/filter/httpException';
 import { TransformInterceptor } from './core/interceptor/transform';
 
@@ -29,6 +30,16 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
   // 全局注册拦截器
   app.useGlobalInterceptors(new TransformInterceptor());
+  // swagger设置
+  const config = new DocumentBuilder()
+    .setTitle('管理后台')
+    .setDescription('管理后台接口文档')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('swagger', app, document);
+
   // 启动端口
   await app.listen(4000);
   // 热更新
