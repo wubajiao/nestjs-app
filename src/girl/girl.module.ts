@@ -3,9 +3,14 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 20:46:18
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-27 09:52:41
+ * @LastEditTime : 2023-04-27 10:34:44
  */
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { GirlController } from './girl.controller';
 import { GirlService } from './girl.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -19,6 +24,8 @@ import { CounterMiddleware } from '../counter/counter.middleware';
 })
 export class GirlModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(CounterMiddleware).forRoutes('girl');
+    consumer
+      .apply(CounterMiddleware)
+      .forRoutes({ path: 'girl', method: RequestMethod.GET });
   }
 }
