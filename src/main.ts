@@ -3,10 +3,11 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-27 10:04:04
+ * @LastEditTime : 2023-04-27 10:18:11
  */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import * as cors from 'cors';
 
 function MiddleWareAll(req: any, res: any, next: any) {
   console.log('全局中间件');
@@ -18,6 +19,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   // 设置全局前缀
   app.setGlobalPrefix('/api');
+  // 跨域中间件
+  app.use(cors());
   // 全局中间件
   app.use(MiddleWareAll);
   // 启动端口
