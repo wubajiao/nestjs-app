@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-07 15:33:49
+ * @LastEditTime : 2023-04-27 09:30:21
 -->
 
 ## Installation
@@ -45,6 +45,9 @@ $ npm run test:cov
 ```bash
 # 创建一个控制器和该控制器的单元测试文件
 nest g co posts
+
+# 生成局部中间件
+nest g mi counter
 
 # module
 nest g module gir
