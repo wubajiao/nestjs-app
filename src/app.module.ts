@@ -3,17 +3,19 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-07 16:37:06
+ * @LastEditTime : 2023-04-27 11:23:55
  */
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { GirlModule } from './girl/girl.module';
 import { UserModule } from './user/user.module';
+import { ConfigModule } from './config/config.module';
 
 @Module({
   imports: [
     GirlModule,
     UserModule,
+    ConfigModule,
     TypeOrmModule.forRoot({
       type: 'mysql', // 数据库类型
       host: 'localhost', // 数据库的连接地址host

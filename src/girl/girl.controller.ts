@@ -3,9 +3,17 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 20:51:25
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-21 12:03:12
+ * @LastEditTime : 2023-04-27 11:53:48
  */
-import { Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Inject,
+} from '@nestjs/common';
 import { GirlService } from './girl.service';
 
 @Controller('girl')
@@ -37,5 +45,11 @@ export class GirlController {
   deleteGirl(@Param() params: any) {
     const { id } = params;
     return this.girlService.deleteGirl(id);
+  }
+
+  @Inject('Config') private shopName: string;
+  @Get('/globalModule')
+  globalModule(): string {
+    return this.shopName;
   }
 }
