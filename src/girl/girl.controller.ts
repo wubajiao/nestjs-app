@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 20:51:25
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-28 14:09:16
+ * @LastEditTime : 2023-04-28 14:25:09
  */
 import {
   Controller,
@@ -13,6 +13,7 @@ import {
   Post,
   Body,
   Put,
+  Patch,
   Inject,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
@@ -39,19 +40,19 @@ export class GirlController {
   }
 
   @ApiOperation({ summary: '新增' })
-  @Post('/add')
+  @Post('')
   addGirl(@Body(GirlPipe) createGirlDto: CreateGirlDto) {
     return this.girlService.addGirl(createGirlDto);
   }
 
   @ApiOperation({ summary: '编辑' })
-  @Put('/update/:id')
+  @Patch(':id')
   updateGirl(@Param('id') id: string, @Body() updateGirlDto: UpdateGirlDto) {
     return this.girlService.updateGirl(id, updateGirlDto);
   }
 
   @ApiOperation({ summary: '删除' })
-  @Delete('/delete/:id')
+  @Delete(':id')
   deleteGirl(@Param() params: any) {
     const { id } = params;
     return this.girlService.deleteGirl(id);
