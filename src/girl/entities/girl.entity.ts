@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-04-07 16:38:33
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-27 14:22:24
+ * @LastEditTime : 2023-04-28 15:19:25
  */
 import {
   Entity,
@@ -17,7 +17,7 @@ import { Order } from '../../order/entities/order.entity';
 @Entity()
 export class Girl {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({ type: 'varchar', length: 255 })
   name: string;
