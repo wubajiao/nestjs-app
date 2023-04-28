@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 20:51:25
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-27 16:25:00
+ * @LastEditTime : 2023-04-28 14:09:16
  */
 import {
   Controller,
@@ -11,11 +11,15 @@ import {
   Get,
   Param,
   Post,
+  Body,
   Put,
   Inject,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { GirlService } from './girl.service';
+import { CreateGirlDto } from './dto/create-girl.dto';
+import { UpdateGirlDto } from './dto/update-girl.dto';
+import { GirlPipe } from './girl.pipe';
 
 @ApiTags('女孩')
 @Controller('girl')
@@ -36,15 +40,14 @@ export class GirlController {
 
   @ApiOperation({ summary: '新增' })
   @Post('/add')
-  addGirl() {
-    return this.girlService.addGirl();
+  addGirl(@Body(GirlPipe) createGirlDto: CreateGirlDto) {
+    return this.girlService.addGirl(createGirlDto);
   }
 
   @ApiOperation({ summary: '编辑' })
   @Put('/update/:id')
-  updateGirl(@Param() params: any) {
-    const { id } = params;
-    return this.girlService.updateGirl(id);
+  updateGirl(@Param('id') id: string, @Body() updateGirlDto: UpdateGirlDto) {
+    return this.girlService.updateGirl(id, updateGirlDto);
   }
 
   @ApiOperation({ summary: '删除' })

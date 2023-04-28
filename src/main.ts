@@ -3,9 +3,10 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-27 16:11:37
+ * @LastEditTime : 2023-04-28 10:28:15
  */
 import { NestFactory } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
 import * as cors from 'cors';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
@@ -39,7 +40,8 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('swagger', app, document);
-
+  // 全局管道注入
+  app.useGlobalPipes(new ValidationPipe());
   // 启动端口
   await app.listen(4000);
   // 热更新

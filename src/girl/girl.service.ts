@@ -3,12 +3,14 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 20:53:45
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-25 16:31:33
+ * @LastEditTime : 2023-04-28 14:09:05
  */
 import { Injectable } from '@nestjs/common';
 import { Like, Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Girl } from './entities/girl.entity';
+import { CreateGirlDto } from './dto/create-girl.dto';
+import { UpdateGirlDto } from './dto/update-girl.dto';
 
 @Injectable()
 export class GirlService {
@@ -31,21 +33,13 @@ export class GirlService {
   }
 
   // 新增
-  addGirl() {
-    const data = new Girl();
-    data.name = '大梨';
-    data.age = 25;
-    data.skill = '精油按摩,日式按摩';
-
-    return this.girl.save(data);
+  addGirl(createGirlDto: CreateGirlDto) {
+    return this.girl.save(createGirlDto);
   }
 
   // 修改
-  updateGirl(id: string) {
-    const data = new Girl();
-    data.name = '小绿';
-    data.age = 20;
-    return this.girl.update(id, data);
+  updateGirl(id: string, updateGirlDto: UpdateGirlDto) {
+    return this.girl.update(id, updateGirlDto);
   }
 
   // 删除
