@@ -3,17 +3,17 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-27 14:27:10
+ * @LastEditTime : 2023-05-04 16:18:17
  */
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { GirlModule } from './girl/girl.module';
-import { UserModule } from './user/user.module';
 import { ConfigModule } from './config/config.module';
 import { OrderModule } from './order/order.module';
 import { OrderService } from './order/order.service';
 import { OrderController } from './order/order.controller';
 import { Order } from './order/entities/order.entity';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
