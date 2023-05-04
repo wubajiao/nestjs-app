@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-04-27 15:02:47
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-28 12:18:09
+ * @LastEditTime : 2023-05-04 15:48:10
  */
 import {
   CallHandler,
@@ -20,7 +20,7 @@ export class TransformInterceptor implements NestInterceptor {
       map((data) => {
         return {
           data,
-          code: 0,
+          code: 200,
           message: '请求成功',
         };
       }),
