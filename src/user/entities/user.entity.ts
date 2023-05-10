@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-04 16:14:29
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 12:01:27
+ * @LastEditTime : 2023-05-10 14:27:14
  */
 import {
   // BeforeInsert,
@@ -12,7 +12,6 @@ import {
   CreateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
 @Entity('User')
 export class User {
   @PrimaryGeneratedColumn('uuid')
