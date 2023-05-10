@@ -3,14 +3,17 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-04 16:14:29
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-04 16:47:19
+ * @LastEditTime : 2023-05-10 12:03:37
  */
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entities/user.entity';
+import { RegisterUserDto } from './dto/register-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import randomName from 'src/utils/randomName';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
@@ -18,6 +21,35 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
   ) {}
+
+  /**
+   * 账号密码注册
+   * @param registerUser
+   */
+  async register(registerUser: RegisterUserDto) {
+    const { account, password, email } = registerUser;
+
+    const existUser = await this.userRepository.findOne({
+      where: { account },
+    });
+
+    if (existUser) {
+      throw new HttpException('用户名已存在', HttpStatus.BAD_REQUEST);
+    }
+
+    // const newUser = await this.userRepository.create(registerUser); // 只是创建一个新的对象
+    const user = {
+      account,
+      email,
+      password: bcrypt.hashSync(password, 10),
+      role: 'visitor',
+      name: randomName(),
+      status: true,
+    };
+
+    await this.userRepository.save(user);
+    return await this.userRepository.findOne({ where: { account } });
+  }
 
   create(createUserDto: CreateUserDto) {
     return this.userRepository.save(createUserDto);

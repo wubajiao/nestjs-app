@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-04 16:14:29
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-04 16:48:08
+ * @LastEditTime : 2023-05-10 11:13:47
  */
 import {
   Controller,
@@ -13,16 +13,28 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { UserService } from './user.service';
+import { RegisterUserDto } from './dto/register-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserInfoDto } from './dto/user-info.dto';
 
 @ApiTags('用户')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @ApiOperation({ summary: '注册用户' })
+  @ApiResponse({ status: 200, type: UserInfoDto })
+  @UseInterceptors(ClassSerializerInterceptor)
+  @Post('register')
+  register(@Body() registerUser: RegisterUserDto) {
+    return this.userService.register(registerUser);
+  }
 
   @ApiOperation({ summary: '新增' })
   @Post()

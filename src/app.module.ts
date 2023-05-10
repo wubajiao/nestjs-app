@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-04 16:18:17
+ * @LastEditTime : 2023-05-10 12:06:10
  */
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
