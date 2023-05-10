@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:11:24
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 14:48:13
+ * @LastEditTime : 2023-05-10 15:40:46
  */
 import {
   Controller,
@@ -22,10 +22,12 @@ import { AuthGuard } from '@nestjs/passport';
 @ApiTags('验证')
 @Controller('auth')
 export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+
   @UseGuards(AuthGuard('local'))
   @UseInterceptors(ClassSerializerInterceptor)
   @Post('login')
-  async login(@Body() user: LoginDto, @Req() req) {
-    return req.user;
+  async login(@Body() user: LoginDto, @Req() req: any) {
+    return await this.authService.login(req.user);
   }
 }
