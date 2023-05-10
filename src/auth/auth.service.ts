@@ -3,17 +3,21 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:11:24
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 15:41:22
+ * @LastEditTime : 2023-05-10 16:33:00
  */
 import { Injectable } from '@nestjs/common';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { UpdateAuthDto } from './dto/update-auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/entities/user.entity';
+import { UserService } from './../user/user.service';
 
 @Injectable()
 export class AuthService {
-  constructor(private jwtService: JwtService) {}
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly userService: UserService,
+  ) {}
 
   // 创建token
   createToken(user: Partial<User>) {
@@ -29,6 +33,10 @@ export class AuthService {
     });
 
     return token;
+  }
+
+  async getUser(user) {
+    return await this.userService.findOne(user.id);
   }
 
   create(createAuthDto: CreateAuthDto) {

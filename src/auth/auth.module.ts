@@ -3,17 +3,18 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:11:24
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 14:57:44
+ * @LastEditTime : 2023-05-10 16:15:35
  */
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtModule } from '@nestjs/jwt';
 import { User } from '../user/entities/user.entity';
 import { UserModule } from '../user/user.module';
 import { LocalStorage } from './local.strategy';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtStorage } from './jwt.strategy';
 
 const jwtModule = JwtModule.register({
   secret: 'test123456',
@@ -39,7 +40,7 @@ const jwtModule = JwtModule.register({
     jwtModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStorage],
+  providers: [AuthService, LocalStorage, JwtStorage],
   exports: [jwtModule],
 })
 export class AuthModule {}
