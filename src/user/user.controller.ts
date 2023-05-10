@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-04 16:14:29
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 11:13:47
+ * @LastEditTime : 2023-05-10 17:05:50
  */
 import {
   Controller,
@@ -14,6 +14,7 @@ import {
   Param,
   Delete,
   UseInterceptors,
+  UseGuards,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -22,6 +23,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserInfoDto } from './dto/user-info.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('用户')
 @Controller('user')
@@ -43,6 +45,7 @@ export class UserController {
   }
 
   @ApiOperation({ summary: '列表' })
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   findAll() {
     return this.userService.findAll();
