@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-04 16:14:29
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 17:05:50
+ * @LastEditTime : 2023-05-11 17:29:11
  */
 import {
   Controller,
@@ -29,6 +29,12 @@ import { AuthGuard } from '@nestjs/passport';
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @ApiOperation({ summary: '邮箱发送验证码' })
+  @Post('sendcode')
+  async sendVerificationCode(@Body('email') email: string): Promise<void> {
+    await this.userService.sendVerificationCode(email);
+  }
 
   @ApiOperation({ summary: '注册用户' })
   @ApiResponse({ status: 200, type: UserInfoDto })

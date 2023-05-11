@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-04 16:14:29
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 17:40:33
+ * @LastEditTime : 2023-05-11 18:06:58
  */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
@@ -15,32 +15,37 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import randomName from 'src/utils/randomName';
 import * as bcrypt from 'bcryptjs';
 import { WechatUserInfo } from '../auth/auth.interface';
+import { MailerService } from '@nestjs-modules/mailer';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+    private readonly mailerService: MailerService,
   ) {}
 
   /**
-   * 账号密码注册
+   * 注册：邮箱、验证码、密码
    * @param registerUser
    */
   async register(registerUser: RegisterUserDto) {
-    const { account, password, email } = registerUser;
+    const { verificationCode, password, email } = registerUser;
 
     const existUser = await this.userRepository.findOne({
-      where: { account },
+      where: { email },
     });
 
-    if (existUser) {
-      throw new HttpException('用户名已存在', HttpStatus.BAD_REQUEST);
+    if (existUser.status) {
+      throw new HttpException('该邮箱已存在', HttpStatus.BAD_REQUEST);
     }
 
-    // const newUser = await this.userRepository.create(registerUser); // 只是创建一个新的对象
+    if (!existUser || existUser.verificationCode !== verificationCode) {
+      throw new HttpException('验证码不正确，请核对！', HttpStatus.BAD_REQUEST);
+    }
+
     const user = {
-      account,
+      ...existUser,
       email,
       password: bcrypt.hashSync(password, 10),
       role: 'visitor',
@@ -48,10 +53,61 @@ export class UserService {
       status: true,
     };
 
-    await this.userRepository.save(user);
-    return await this.userRepository.findOne({ where: { account } });
+    await this.userRepository.update(existUser.id, user);
+    return await this.userRepository.findOne({ where: { email } });
   }
 
+  async sendVerificationCode(email: string): Promise<void> {
+    // 发邮件之前看当前这个邮箱是否已经注册
+    const user = await this.userRepository.findOneBy({ email });
+    if (user.status) {
+      throw new HttpException(
+        '该邮箱已注册，如忘记密码，请通过“忘记密码”找回。',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const verificationCode = Math.floor(
+      100000 + Math.random() * 900000,
+    ).toString();
+
+    const mailOptions = {
+      to: email,
+      subject: '韭菜团账号注册',
+      template: 'verification-code',
+      context: {
+        verificationCode,
+      },
+    };
+    await this.mailerService.sendMail(mailOptions);
+    // Save verification code to database
+    if (!user) {
+      await this.userRepository.save({
+        email,
+        verificationCode,
+        status: false,
+      });
+    } else {
+      user.verificationCode = verificationCode;
+      user.status = false;
+      await this.userRepository.save(user);
+    }
+  }
+
+  // async validateUser(
+  //   email: string,
+  //   verificationCode: string,
+  // ): Promise<User | null> {
+  //   const user = await this.userRepository.findOneBy({ email });
+  //   if (!user || user.verificationCode !== verificationCode) {
+  //     return null;
+  //   }
+  //   user.status = true;
+  //   await this.userRepository.save(user);
+  //   return user;
+  // }
+
+  // 微信扫码登录注册
   async registerByWechat(userInfo: WechatUserInfo) {
     const { nickname, openid, headimgurl } = userInfo;
     const newUser = this.userRepository.create({
