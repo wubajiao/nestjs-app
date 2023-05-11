@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-04 16:14:29
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 14:27:14
+ * @LastEditTime : 2023-05-10 17:38:31
  */
 import {
   // BeforeInsert,
@@ -31,6 +31,12 @@ export class User {
 
   @Column({ select: false }) // 表示隐藏此列,只在查询时生效
   password: string; // 密码
+
+  @Column({ default: null })
+  avatar: string;
+
+  @Column({ default: null })
+  openid: string;
 
   @Column()
   status: boolean;

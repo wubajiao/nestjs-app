@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-04 16:14:29
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 12:03:37
+ * @LastEditTime : 2023-05-10 17:40:33
  */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
@@ -14,6 +14,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import randomName from 'src/utils/randomName';
 import * as bcrypt from 'bcryptjs';
+import { WechatUserInfo } from '../auth/auth.interface';
 
 @Injectable()
 export class UserService {
@@ -49,6 +50,21 @@ export class UserService {
 
     await this.userRepository.save(user);
     return await this.userRepository.findOne({ where: { account } });
+  }
+
+  async registerByWechat(userInfo: WechatUserInfo) {
+    const { nickname, openid, headimgurl } = userInfo;
+    const newUser = this.userRepository.create({
+      name: nickname,
+      openid,
+      avatar: headimgurl,
+    });
+
+    return await this.userRepository.save(newUser);
+  }
+
+  async findByOpenid(openid: string) {
+    return await this.userRepository.findOne({ where: { openid } });
   }
 
   create(createUserDto: CreateUserDto) {

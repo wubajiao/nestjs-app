@@ -3,21 +3,39 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:11:24
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 16:33:00
+ * @LastEditTime : 2023-05-11 10:24:15
  */
-import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+/*
+ * @Descripttion :
+ * @Author       : wuhaidong
+ * @Date         : 2023-05-10 12:11:24
+ * @LastEditors  : wuhaidong
+ * @LastEditTime : 2023-05-10 17:34:30
+ */
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { AxiosResponse } from 'axios';
+import { HttpService } from '@nestjs/axios';
+import { lastValueFrom } from 'rxjs';
 import { User } from '../user/entities/user.entity';
 import { UserService } from './../user/user.service';
+import {
+  AccessTokenInfo,
+  AccessConfig,
+  WechatError,
+  WechatUserInfo,
+} from './auth.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UserService,
+    private httpService: HttpService,
   ) {}
+
+  private accessTokenInfo: AccessTokenInfo;
+  public apiServer = 'https://api.weixin.qq.com';
 
   // 创建token
   createToken(user: Partial<User>) {
@@ -39,23 +57,80 @@ export class AuthService {
     return await this.userService.findOne(user.id);
   }
 
-  create(createAuthDto: CreateAuthDto) {
-    return 'This action adds a new auth';
+  async loginWithWechat(code) {
+    if (!code) {
+      throw new BadRequestException('请输入微信授权码');
+    }
+    await this.getAccessToken(code);
+
+    const user = await this.getUserByOpenid();
+    if (!user) {
+      // 获取用户信息，注册新用户
+      const userInfo: WechatUserInfo = await this.getUserInfo();
+      return this.userService.registerByWechat(userInfo);
+    }
+    return this.login(user);
   }
 
-  findAll() {
-    return `This action returns all auth`;
+  // 通过微信openId 获取用户
+  async getUserByOpenid() {
+    return await this.userService.findByOpenid(this.accessTokenInfo.openid);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
+  // 获取微星用户信息
+  async getUserInfo() {
+    const result: AxiosResponse<WechatError & WechatUserInfo> =
+      await lastValueFrom(
+        this.httpService.get(
+          `${this.apiServer}/sns/userinfo?access_token=${this.accessTokenInfo.accessToken}&openid=${this.accessTokenInfo.openid}`,
+        ),
+      );
+    if (result.data.errcode) {
+      throw new BadRequestException(
+        `[getUserInfo] errcode:${result.data.errcode}, errmsg:${result.data.errmsg}`,
+      );
+    }
+    console.log('result', result.data);
+
+    return result.data;
   }
 
-  update(id: number, updateAuthDto: UpdateAuthDto) {
-    return `This action updates a #${id} auth`;
+  // 获取微信accessToken
+  async getAccessToken(code) {
+    const { APPID, APPSECRET } = process.env;
+    if (!APPSECRET) {
+      throw new BadRequestException('[getAccessToken]必须有appSecret');
+    }
+    if (
+      !this.accessTokenInfo ||
+      (this.accessTokenInfo && this.isExpires(this.accessTokenInfo))
+    ) {
+      // 请求accessToken数据
+      const res: AxiosResponse<WechatError & AccessConfig, any> =
+        await lastValueFrom(
+          this.httpService.get(
+            `${this.apiServer}/sns/oauth2/access_token?appid=${APPID}&secret=${APPSECRET}&code=${code}&grant_type=authorization_code`,
+          ),
+        );
+
+      if (res.data.errcode) {
+        throw new BadRequestException(
+          `[getAccessToken] errcode:${res.data.errcode}, errmsg:${res.data.errmsg}`,
+        );
+      }
+      this.accessTokenInfo = {
+        accessToken: res.data.access_token,
+        expiresIn: res.data.expires_in,
+        getTime: Date.now(),
+        openid: res.data.openid,
+      };
+    }
+
+    return this.accessTokenInfo.accessToken;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  // 判断accesstoken是否过期
+  isExpires(access) {
+    return Date.now() - access.getTime > access.expiresIn * 1000;
   }
 }

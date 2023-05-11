@@ -11,6 +11,7 @@ import { AuthController } from './auth.controller';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
+import { HttpModule } from '@nestjs/axios';
 import { User } from '../user/entities/user.entity';
 import { UserModule } from '../user/user.module';
 import { LocalStorage } from './local.strategy';
@@ -38,6 +39,7 @@ const jwtModule = JwtModule.register({
     UserModule,
     PassportModule,
     jwtModule,
+    HttpModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, LocalStorage, JwtStorage],
