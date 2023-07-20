@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-28 10:28:15
+ * @LastEditTime : 2023-07-20 16:35:49
  */
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
@@ -39,7 +39,7 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('swagger', app, document); // swagger地址：http://localhost:4000/swagger
   // 全局管道注入
   app.useGlobalPipes(new ValidationPipe());
   // 启动端口

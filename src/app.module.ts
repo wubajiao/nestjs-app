@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-11 16:10:39
+ * @LastEditTime : 2023-07-20 16:31:59
  */
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
@@ -18,6 +18,9 @@ import { Order } from './order/entities/order.entity';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { User } from './user/entities/user.entity';
+import { PostsModule } from './posts/posts.module';
+import { TagModule } from './tag/tag.module';
+import { CategoryModule } from './category/category.module';
 import * as path from 'path';
 
 console.log('--', __dirname);
@@ -60,9 +63,12 @@ console.log('--', __dirname);
     ConfigModule.forRoot('洗浴中心'),
     TypeOrmModule.forFeature([Order]),
     GirlModule,
+    PostsModule,
     UserModule,
     OrderModule,
     AuthModule,
+    TagModule,
+    CategoryModule,
   ],
   controllers: [OrderController],
   providers: [OrderService],

@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-04 16:14:29
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-11 17:28:04
+ * @LastEditTime : 2023-07-20 16:46:18
  */
 import {
   // BeforeInsert,
@@ -11,16 +11,18 @@ import {
   Column,
   CreateDateColumn,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
+import { PostsEntity } from 'src/posts/entities/posts.entity';
 @Entity('User')
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ default: null })
   name: string;
 
-  @Column()
+  @Column({ default: null })
   account: string;
 
   @Column()
@@ -29,7 +31,7 @@ export class User {
   @Column('simple-enum', { enum: ['root', 'author', 'visitor'] })
   role: string;
 
-  @Column({ select: false }) // 表示隐藏此列,只在查询时生效
+  @Column({ default: null, select: false }) // 表示隐藏此列,只在查询时生效
   password: string; // 密码
 
   @Column() // 表示隐藏此列,只在查询时生效
@@ -49,4 +51,7 @@ export class User {
 
   @CreateDateColumn()
   updatedTime: Date;
+
+  @OneToMany(() => PostsEntity, (post) => post.author)
+  posts: PostsEntity[];
 }
