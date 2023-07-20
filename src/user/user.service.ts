@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-04 16:14:29
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-11 18:06:58
+ * @LastEditTime : 2023-07-20 16:40:48
  */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Repository } from 'typeorm';
@@ -60,7 +60,7 @@ export class UserService {
   async sendVerificationCode(email: string): Promise<void> {
     // 发邮件之前看当前这个邮箱是否已经注册
     const user = await this.userRepository.findOneBy({ email });
-    if (user.status) {
+    if (user?.status) {
       throw new HttpException(
         '该邮箱已注册，如忘记密码，请通过“忘记密码”找回。',
         HttpStatus.BAD_REQUEST,

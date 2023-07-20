@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:11:24
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-11 10:24:15
+ * @LastEditTime : 2023-07-20 16:55:57
  */
 /*
  * @Descripttion :
@@ -46,7 +46,7 @@ export class AuthService {
   async login(user: Partial<User>) {
     const token = this.createToken({
       id: user.id,
-      account: user.account,
+      email: user.email,
       role: user.role,
     });
 
@@ -77,7 +77,7 @@ export class AuthService {
     return await this.userService.findByOpenid(this.accessTokenInfo.openid);
   }
 
-  // 获取微星用户信息
+  // 获取微信用户信息
   async getUserInfo() {
     const result: AxiosResponse<WechatError & WechatUserInfo> =
       await lastValueFrom(

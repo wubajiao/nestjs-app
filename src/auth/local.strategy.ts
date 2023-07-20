@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:12:26
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 14:47:49
+ * @LastEditTime : 2023-07-20 16:59:54
  */
 import { compareSync } from 'bcryptjs';
 import { BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
@@ -18,23 +18,23 @@ export class LocalStorage extends PassportStrategy(Strategy) {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {
-    // 如果不是account、password， 在constructor中配置
+    // 如果不是email、password， 在constructor中配置
     super({
-      usernameField: 'account',
+      usernameField: 'email',
       passwordField: 'password',
     } as IStrategyOptions);
   }
 
-  async validate(account: string, password: string) {
+  async validate(email: string, password: string) {
     // 因为密码是加密后的，没办法直接对比用户名密码，只能先根据用户名查出用户，再比对密码
     const user = await this.userRepository
       .createQueryBuilder('user')
       .addSelect('user.password')
-      .where('user.account=:account', { account })
+      .where('user.email=:email', { email })
       .getOne();
 
     if (!user) {
-      throw new BadRequestException('用户名不正确！');
+      throw new BadRequestException('邮箱不存在，请先注册！');
     }
 
     if (!compareSync(password, user.password)) {
