@@ -2,7 +2,7 @@ import { CategoryService } from './../category/category.service';
 import { CreatePostDto, PostInfoDto, PostsRo } from './dto/post.dto';
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Repository, Not, IsNull } from 'typeorm';
 import { PostsEntity } from './entities/posts.entity';
 import { TagService } from './../tag/tag.service';
 import { count } from 'console';
@@ -16,7 +16,7 @@ export class PostsService {
     private readonly tagService: TagService,
   ) {}
 
-  async create(user, post: CreatePostDto): Promise<number> {
+  async create(user, post: CreatePostDto): Promise<string> {
     const { title } = post;
     if (!title) {
       throw new HttpException('缺少文章标题', HttpStatus.BAD_REQUEST);
@@ -29,7 +29,7 @@ export class PostsService {
       throw new HttpException('文章已存在', HttpStatus.BAD_REQUEST);
     }
 
-    const { tag, category = 0, status, isRecommend, coverUrl } = post;
+    const { tag, category = '', status, isRecommend } = post;
 
     const categoryDoc = await this.categoryService.findById(category);
 
@@ -106,7 +106,7 @@ export class PostsService {
     return result.toResponseObject();
   }
 
-  async updateById(id, post): Promise<number> {
+  async updateById(id, post): Promise<string> {
     const existPost = await this.postsRepository.findOne(id);
     if (!existPost) {
       throw new HttpException(`id为${id}的文章不存在`, HttpStatus.BAD_REQUEST);

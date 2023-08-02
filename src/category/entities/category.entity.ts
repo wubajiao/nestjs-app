@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-12 12:22:34
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-07-12 11:30:07
+ * @LastEditTime : 2023-08-02 18:09:01
  */
 import { PostsEntity } from 'src/posts/entities/posts.entity';
 import {
@@ -17,8 +17,8 @@ import {
 
 @Entity('category')
 export class CategoryEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;

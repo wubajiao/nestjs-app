@@ -16,8 +16,8 @@ import { PostInfoDto } from '../dto/post.dto';
 
 @Entity('post')
 export class PostsEntity {
-  @PrimaryGeneratedColumn()
-  id: number; // 标记为主列，值自动生成
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   // 文章标题
   @Column({ length: 50 })

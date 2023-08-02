@@ -30,12 +30,12 @@ export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
   /**
-   * 创建文章
+   * 创建文章,只有author和root有创建权限
    */
   @ApiOperation({ summary: '创建文章' })
   @ApiBearerAuth()
   @Post()
-  @Roles('admin', 'root')
+  @Roles('author', 'root')
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   async create(@Body() post: CreatePostDto, @Req() req) {
     return await this.postsService.create(req.user, post);
