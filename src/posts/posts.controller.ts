@@ -46,13 +46,10 @@ export class PostsController {
    */
   @ApiOperation({ summary: '获取文章列表' })
   @Get('/list')
-  async findAll(
-    @Query() query,
-    @Query('pageSize') pageSize: number,
-    @Query('pageNum') pageNum: number,
-  ): Promise<PostsRo> {
-    return await this.postsService.findAll(query);
+  async findAll(@Body() body): Promise<PostsRo> {
+    return await this.postsService.findAll(body);
   }
+
   /**
    * 获取归档列表
    */

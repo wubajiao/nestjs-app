@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-07-12 12:19:34
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-07-20 16:25:00
+ * @LastEditTime : 2023-08-10 17:21:06
  */
 import { BadRequestException } from '@nestjs/common';
 /***
@@ -36,7 +36,6 @@ export class MDMiddleware implements NestMiddleware {
 function toText(html, len = 30) {
   if (html != null) {
     const substr = html.replace(/<[^>]+>|&[^>]+;/g, '').trim();
-    console.log('substr', substr);
     return substr.length < len ? substr : substr.substring(0, len) + '...';
   }
 }

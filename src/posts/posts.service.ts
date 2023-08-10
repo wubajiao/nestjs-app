@@ -54,7 +54,7 @@ export class PostsService {
     return created.id;
   }
 
-  async findAll(query): Promise<PostsRo> {
+  async findAll(body): Promise<PostsRo> {
     const qb = await this.postsRepository
       .createQueryBuilder('post')
       .leftJoinAndSelect('post.category', 'category')
@@ -65,7 +65,7 @@ export class PostsService {
     qb.orderBy('post.create_time', 'DESC');
 
     const count = await qb.getCount();
-    const { pageNum = 1, pageSize = 10, ...params } = query;
+    const { pageNum = 1, pageSize = 10, ...params } = body;
     qb.limit(pageSize);
     qb.offset(pageSize * (pageNum - 1));
 
@@ -141,7 +141,7 @@ export class PostsService {
       .select([`DATE_FORMAT(update_time, '%Y年%m') time`, `COUNT(*) count`])
       .where('status=:status', { status: 'publish' })
       .groupBy('time')
-      .orderBy('update_time', 'DESC')
+      .orderBy('time', 'DESC')
       .getRawMany();
     return data;
   }
