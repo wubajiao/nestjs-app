@@ -106,8 +106,8 @@ export class PostsService {
     return result.toResponseObject();
   }
 
-  async updateById(id, post): Promise<string> {
-    const existPost = await this.postsRepository.findOne(id);
+  async updateById(id: string, post: any): Promise<string> {
+    const existPost = await this.postsRepository.findOne({ where: { id } });
     if (!existPost) {
       throw new HttpException(`id为${id}的文章不存在`, HttpStatus.BAD_REQUEST);
     }
@@ -127,8 +127,8 @@ export class PostsService {
     return (await this.postsRepository.save(updatePost)).id;
   }
 
-  async updateViewById(id) {
-    const post = await this.postsRepository.findOne(id);
+  async updateViewById(id: string) {
+    const post = await this.postsRepository.findOne({ where: { id } });
     const updatePost = await this.postsRepository.merge(post, {
       count: post.count + 1,
     });
@@ -156,8 +156,8 @@ export class PostsService {
     return data;
   }
 
-  async remove(id) {
-    const existPost = await this.postsRepository.findOne(id);
+  async remove(id: string) {
+    const existPost = await this.postsRepository.findOne({ where: { id } });
     if (!existPost) {
       throw new HttpException(`id为${id}的文章不存在`, HttpStatus.BAD_REQUEST);
     }

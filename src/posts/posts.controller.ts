@@ -87,7 +87,7 @@ export class PostsController {
   @ApiBearerAuth()
   @Put(':id')
   @UseGuards(AuthGuard('jwt'))
-  async update(@Param('id') id: number, @Body() post: CreatePostDto) {
+  async update(@Param('id') id: string, @Body() post: CreatePostDto) {
     return await this.postsService.updateById(id, post);
   }
 
