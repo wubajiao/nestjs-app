@@ -3,27 +3,25 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-07-20 16:31:59
+ * @LastEditTime : 2023-08-11 17:00:44
  */
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import * as path from 'path';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { GirlModule } from './girl/girl.module';
 import { ConfigModule } from './config/config.module';
 import { OrderModule } from './order/order.module';
-import { OrderService } from './order/order.service';
-import { OrderController } from './order/order.controller';
-import { Order } from './order/entities/order.entity';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { User } from './user/entities/user.entity';
 import { PostsModule } from './posts/posts.module';
 import { TagModule } from './tag/tag.module';
 import { CategoryModule } from './category/category.module';
-import * as path from 'path';
 
-console.log('--', __dirname);
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -61,7 +59,6 @@ console.log('--', __dirname);
       },
     }),
     ConfigModule.forRoot('洗浴中心'),
-    TypeOrmModule.forFeature([Order]),
     GirlModule,
     PostsModule,
     UserModule,
@@ -70,7 +67,7 @@ console.log('--', __dirname);
     TagModule,
     CategoryModule,
   ],
-  controllers: [OrderController],
-  providers: [OrderService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

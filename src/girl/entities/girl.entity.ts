@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-04-07 16:38:33
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-28 15:19:25
+ * @LastEditTime : 2023-08-11 16:44:17
  */
 import {
   Entity,
@@ -12,7 +12,7 @@ import {
   CreateDateColumn,
   JoinColumn,
 } from 'typeorm';
-import { Order } from '../../order/entities/order.entity';
+import { OrderEntity } from '../../order/entities/order.entity';
 
 @Entity()
 export class Girl {
@@ -32,5 +32,5 @@ export class Girl {
   createTime: Date;
 
   @JoinColumn()
-  order: Order[]; // 一对多关系
+  order: OrderEntity[]; // 一对多关系
 }
