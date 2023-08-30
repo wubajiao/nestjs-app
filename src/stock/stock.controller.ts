@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-08-30 22:47:20
+ * @LastEditTime : 2023-08-30 23:38:31
  */
 import {
   Controller,
@@ -47,12 +47,7 @@ export class StockController {
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('hold')
   findAllHold(@Req() req: any) {
-    return this.stockService.findAllHold(req.user.id);
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.stockService.findOne(id);
+    return this.stockService.findAllHold(req?.user?.id);
   }
 
   @ApiOperation({ summary: '更新自选股' })

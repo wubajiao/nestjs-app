@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-08-30 22:50:33
+ * @LastEditTime : 2023-08-30 23:26:31
  */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -49,10 +49,6 @@ export class StockService {
       select: ['id', 'name', 'code', 'holdNumber', 'cost'],
     });
     return stocks;
-  }
-
-  findOne(id: string) {
-    return `This action returns a #${id} stock`;
   }
 
   async update(id: string, post: UpdateStockDto) {
