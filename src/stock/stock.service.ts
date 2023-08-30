@@ -3,11 +3,12 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-08-30 23:26:31
+ * @LastEditTime : 2023-08-30 23:53:49
  */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Cron } from '@nestjs/schedule';
 import { CreateStockDto } from './dto/stock.dto';
 import { UpdateStockDto } from './dto/update-stock.dto';
 import { StockEntity } from './entities/stock.entity';
@@ -65,5 +66,11 @@ export class StockService {
 
   remove(id: string) {
     return this.stockRepository.delete(id);
+  }
+
+  // 10秒执行一次
+  @Cron('*/10 * * * * *') // 每小时执行一次：0 0 * * * *
+  handleCron() {
+    console.log('Called every 10 seconds');
   }
 }
