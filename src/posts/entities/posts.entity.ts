@@ -56,7 +56,7 @@ export class PostsEntity {
   status: string;
 
   // 作者
-  @ManyToOne((type) => User, (user) => user.name)
+  @ManyToOne((type) => User, (user) => user.posts)
   author: User;
 
   //   @RelationId( (user:User) => user.posts)

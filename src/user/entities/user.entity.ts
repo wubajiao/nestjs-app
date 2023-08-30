@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-04 16:14:29
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-07-20 16:46:18
+ * @LastEditTime : 2023-08-30 16:11:29
  */
 import {
   // BeforeInsert,
@@ -14,6 +14,7 @@ import {
   OneToMany,
 } from 'typeorm';
 import { PostsEntity } from 'src/posts/entities/posts.entity';
+import { StockEntity } from 'src/stock/entities/stock.entity';
 @Entity('User')
 export class User {
   @PrimaryGeneratedColumn('uuid')
@@ -54,4 +55,7 @@ export class User {
 
   @OneToMany(() => PostsEntity, (post) => post.author)
   posts: PostsEntity[];
+
+  @OneToMany(() => StockEntity, (stock) => stock.user)
+  stock: StockEntity[];
 }

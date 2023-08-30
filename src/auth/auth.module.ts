@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:11:24
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 16:15:35
+ * @LastEditTime : 2023-08-30 17:53:57
  */
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -19,7 +19,7 @@ import { JwtStorage } from './jwt.strategy';
 
 const jwtModule = JwtModule.register({
   secret: 'test123456',
-  signOptions: { expiresIn: '1h' },
+  signOptions: { expiresIn: '7d' }, // 12小时： 12h
 });
 
 // 实际开发 从环境变量中获取

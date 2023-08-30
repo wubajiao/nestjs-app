@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-08-11 17:00:44
+ * @LastEditTime : 2023-08-30 17:17:44
  */
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
@@ -21,6 +21,7 @@ import { User } from './user/entities/user.entity';
 import { PostsModule } from './posts/posts.module';
 import { TagModule } from './tag/tag.module';
 import { CategoryModule } from './category/category.module';
+import { StockModule } from './stock/stock.module';
 
 @Module({
   imports: [
@@ -35,7 +36,7 @@ import { CategoryModule } from './category/category.module';
       retryAttempts: 10, // 充实次数
       // synchronize: true, // 是否将实体同步到数据库
       autoLoadEntities: true, // 自动加载实体配置，forFeature()注册的每个实体都自己动加载
-      entities: [User], // 这里为什么要引入? 还不太明白
+      // entities: [User], // 这里为什么要引入? 还不太明白
     }),
     MailerModule.forRoot({
       transport: {
@@ -66,6 +67,7 @@ import { CategoryModule } from './category/category.module';
     AuthModule,
     TagModule,
     CategoryModule,
+    StockModule,
   ],
   controllers: [AppController],
   providers: [AppService],
