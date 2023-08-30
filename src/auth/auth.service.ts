@@ -3,21 +3,14 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:11:24
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-07-20 16:55:57
- */
-/*
- * @Descripttion :
- * @Author       : wuhaidong
- * @Date         : 2023-05-10 12:11:24
- * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 17:34:30
+ * @LastEditTime : 2023-08-30 22:55:35
  */
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AxiosResponse } from 'axios';
 import { HttpService } from '@nestjs/axios';
 import { lastValueFrom } from 'rxjs';
-import { User } from '../user/entities/user.entity';
+import { UserEntity } from '../user/entities/user.entity';
 import { UserService } from './../user/user.service';
 import {
   AccessTokenInfo,
@@ -38,12 +31,12 @@ export class AuthService {
   public apiServer = 'https://api.weixin.qq.com';
 
   // 创建token
-  createToken(user: Partial<User>) {
+  createToken(user: Partial<UserEntity>) {
     return this.jwtService.sign(user);
   }
 
   // 登录
-  async login(user: Partial<User>) {
+  async login(user: Partial<UserEntity>) {
     const token = this.createToken({
       id: user.id,
       email: user.email,

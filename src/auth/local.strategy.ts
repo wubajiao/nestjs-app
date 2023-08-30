@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:12:26
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-07-20 16:59:54
+ * @LastEditTime : 2023-08-30 22:59:51
  */
 import { compareSync } from 'bcryptjs';
 import { BadRequestException, HttpException, HttpStatus } from '@nestjs/common';
@@ -11,12 +11,12 @@ import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IStrategyOptions, Strategy } from 'passport-local';
 import { Repository } from 'typeorm';
-import { User } from '../user/entities/user.entity';
+import { UserEntity } from '../user/entities/user.entity';
 
 export class LocalStorage extends PassportStrategy(Strategy) {
   constructor(
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private readonly userRepository: Repository<UserEntity>,
   ) {
     // 如果不是email、password， 在constructor中配置
     super({

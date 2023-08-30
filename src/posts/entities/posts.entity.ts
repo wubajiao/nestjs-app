@@ -1,6 +1,6 @@
 import { TagEntity } from '../../tag/entities/tag.entity';
 import { CategoryEntity } from '../../category/entities/category.entity';
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 import {
   Column,
   Entity,
@@ -56,11 +56,8 @@ export class PostsEntity {
   status: string;
 
   // 作者
-  @ManyToOne((type) => User, (user) => user.posts)
-  author: User;
-
-  //   @RelationId( (user:User) => user.posts)
-  //   userId:User
+  @ManyToOne((type) => UserEntity, (user) => user.posts)
+  author: UserEntity;
 
   // 分类
   @Exclude()

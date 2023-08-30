@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:11:24
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-08-30 17:53:57
+ * @LastEditTime : 2023-08-30 22:55:19
  */
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
@@ -12,7 +12,7 @@ import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { HttpModule } from '@nestjs/axios';
-import { User } from '../user/entities/user.entity';
+import { UserEntity } from '../user/entities/user.entity';
 import { UserModule } from '../user/user.module';
 import { LocalStorage } from './local.strategy';
 import { JwtStorage } from './jwt.strategy';
@@ -35,7 +35,7 @@ const jwtModule = JwtModule.register({
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([UserEntity]),
     UserModule,
     PassportModule,
     jwtModule,

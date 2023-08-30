@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-04 16:14:29
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-08-30 16:11:29
+ * @LastEditTime : 2023-08-30 22:58:55
  */
 import {
   // BeforeInsert,
@@ -16,7 +16,7 @@ import {
 import { PostsEntity } from 'src/posts/entities/posts.entity';
 import { StockEntity } from 'src/stock/entities/stock.entity';
 @Entity('User')
-export class User {
+export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

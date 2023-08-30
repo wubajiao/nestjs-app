@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-08-30 17:15:25
+ * @LastEditTime : 2023-08-30 22:57:22
  */
 import {
   Entity,
@@ -12,7 +12,7 @@ import {
   JoinColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { User } from 'src/user/entities/user.entity';
+import { UserEntity } from 'src/user/entities/user.entity';
 
 @Entity('stock')
 export class StockEntity {
@@ -57,9 +57,9 @@ export class StockEntity {
   })
   updateTime: Date;
 
-  @ManyToOne(() => User, (user) => user.stock)
+  @ManyToOne(() => UserEntity, (user) => user.stock)
   @JoinColumn({
     name: 'user_id',
   })
-  user: User;
+  user: UserEntity;
 }
