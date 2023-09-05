@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-08-30 22:57:22
+ * @LastEditTime : 2023-09-05 16:58:23
  */
 import {
   Entity,
@@ -62,4 +62,36 @@ export class StockEntity {
     name: 'user_id',
   })
   user: UserEntity;
+}
+
+@Entity('all_stock')
+export class AllStockEntity {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  // 股票名称
+  @Column({ length: 50 })
+  name: string;
+
+  // 股票编码
+  @Column()
+  code: string;
+
+  // 交易所 'sh': 上海、'sz': 深圳
+  @Column({ default: 0 })
+  exchange: string;
+
+  @Column({
+    type: 'timestamp',
+    name: 'create_time',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createTime: Date;
+
+  @Column({
+    type: 'timestamp',
+    name: 'update_time',
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  updateTime: Date;
 }
