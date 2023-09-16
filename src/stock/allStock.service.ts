@@ -3,26 +3,22 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-14 16:02:20
+ * @LastEditTime : 2023-09-16 21:39:27
  */
-import {
-  Injectable,
-  HttpException,
-  HttpStatus,
-  HttpServer,
-} from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cron } from '@nestjs/schedule';
 import { AllStockEntity } from './entities/allStock.entity';
 import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom } from 'rxjs';
+import { xueqiuHeaders } from './apiHeaders';
 
 @Injectable()
 export class AllStockService {
   constructor(
     @InjectRepository(AllStockEntity)
-    private allStockRepository: Repository<AllStockEntity>,
+    private readonly allStockRepository: Repository<AllStockEntity>,
     private httpService: HttpService,
   ) {}
 
@@ -33,7 +29,7 @@ export class AllStockService {
       this.httpService
         .get('http://api.mairui.club/hslt/list/18d643330de55260b')
         .pipe(
-          catchError((error: any) => {
+          catchError((_error: any) => {
             // TODO handle error log
             // this.logger.error(error.response.data);
             throw 'An error happened!';
@@ -51,7 +47,7 @@ export class AllStockService {
       this.httpService
         .get('http://api.mairui.club/hslt/list/18d643330de55260b')
         .pipe(
-          catchError((error: any) => {
+          catchError((_error: any) => {
             throw 'An error happened!';
           }),
         ),
@@ -91,7 +87,7 @@ export class AllStockService {
           `https://stock.xueqiu.com/v5/stock/realtime/quotec.json?symbol=${symbol}`,
         )
         .pipe(
-          catchError((error: any) => {
+          catchError((_error: any) => {
             throw 'An error happened!';
           }),
         ),
@@ -112,7 +108,7 @@ export class AllStockService {
       this.httpService
         .get(`http://api.mairui.club/zs/lsgl/18d643330de55260b`)
         .pipe(
-          catchError((error: any) => {
+          catchError((_error: any) => {
             throw 'An error happened!';
           }),
         ),
@@ -127,7 +123,7 @@ export class AllStockService {
       this.httpService
         .get(`http://api.mairui.club/hscp/gdbh/${symbol}/18d643330de55260b`)
         .pipe(
-          catchError((error: any) => {
+          catchError((_error: any) => {
             throw 'An error happened!';
           }),
         ),
@@ -142,7 +138,7 @@ export class AllStockService {
       this.httpService
         .get(`http://api.mairui.club/hsrl/ssjy/${symbol}/18d643330de55260b`)
         .pipe(
-          catchError((error: any) => {
+          catchError((_error: any) => {
             throw 'An error happened!';
           }),
         ),
@@ -157,7 +153,7 @@ export class AllStockService {
       this.httpService
         .get(`https://top.baidu.com/api/board?platform=wise&tab=realtime`)
         .pipe(
-          catchError((error: any) => {
+          catchError((_error: any) => {
             throw 'An error happened!';
           }),
         ),
@@ -172,32 +168,108 @@ export class AllStockService {
     }
   }
 
-  // 个股实时分时图-雪球
   /**
-   * @param symbol SH000001
-   * @param period 1d
-   * @returns data
+   * @description: 个股实时分时图-雪球
+   * @param {string} symbol 股票编号： SH000001
+   * @param {string} period 时间区间： 1d
+   * @return {*}
    */
+  // @Cron('*/60 * * * * *')
   async realtimeTradingByXueqiu(symbol: string, period: string): Promise<any> {
-    const headers = {
-      Host: 'stock.xueqiu.com',
-      Referer: 'https://xueqiu.com/',
-      Accept: 'application/json',
-      Cookie: 'xq_a_token=b0e9bcf7d6096be99ca9b45b9e938949e929c316;',
-      'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
-      'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
-      'Accept-Encoding': 'gzip, deflate, br',
-      Connection: 'keep-alive',
-    };
     const { data } = await firstValueFrom(
       this.httpService
         .get(
           `https://stock.xueqiu.com/v5/stock/chart/minute.json?symbol=${symbol}&period=${period}`,
-          { headers: headers },
+          { headers: xueqiuHeaders },
         )
         .pipe(
-          catchError((error: any) => {
+          catchError((_error: any) => {
+            throw 'An error happened!';
+          }),
+        ),
+    );
+    if (data.error_code === 0) {
+      console.log('分时图');
+      return data?.data;
+    } else {
+      throw new HttpException(
+        data.error_code,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
+   * @description: 热股榜
+   * @param size: 条数，默认8
+   * @param type: 类型 全部-10、美股-11、沪深-12、港股-13
+   * @return {*}
+   */
+  async hotStock(size: number, type: number): Promise<any> {
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get(
+          `https://stock.xueqiu.com/v5/stock/hot_stock/list.json?size=${size}&type=${type}`,
+          { headers: xueqiuHeaders },
+        )
+        .pipe(
+          catchError((_error: any) => {
+            throw 'An error happened!';
+          }),
+        ),
+    );
+    if (data.error_code === 0) {
+      return data?.data;
+    } else {
+      throw new HttpException(
+        data.error_code,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
+   * @description: 可以查沪、深、创业板、科创板成交额
+   * @param symbol: 股票代码 SH000001,SZ399001,SZ399006,SH000688
+   * @return {*}
+   */
+  async batch(symbol: string): Promise<any> {
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get(
+          `https://stock.xueqiu.com/v5/stock/batch/quote.json?symbol=${symbol}`,
+          { headers: xueqiuHeaders },
+        )
+        .pipe(
+          catchError((_error: any) => {
+            throw 'An error happened!';
+          }),
+        ),
+    );
+    if (data.error_code === 0) {
+      return data?.data;
+    } else {
+      throw new HttpException(
+        data.error_code,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
+   * @description: 所有股票列表总览
+   * @param
+   * @return {*}
+   */
+  async screener(): Promise<any> {
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get(
+          `https://stock.xueqiu.com/v5/stock/screener/quote/list.json?page=1&size=5000&order=desc&orderby=percent&order_by=percent&market=CN&type=sh_sz`,
+          { headers: xueqiuHeaders },
+        )
+        .pipe(
+          catchError((_error: any) => {
             throw 'An error happened!';
           }),
         ),

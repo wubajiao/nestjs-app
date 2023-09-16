@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-14 16:03:53
+ * @LastEditTime : 2023-09-14 18:09:01
  */
 import {
   Controller,
@@ -81,5 +81,31 @@ export class AllStockController {
   realtimeTradingByXueqiu(@Query() params: { symbol: string; period: string }) {
     const { symbol, period } = params;
     return this.allStockService.realtimeTradingByXueqiu(symbol, period);
+  }
+
+  @ApiOperation({ summary: '热股榜' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('hotStock')
+  hotStock(@Query() params: { size: number; type: number }) {
+    const { size, type } = params;
+    return this.allStockService.hotStock(size, type);
+  }
+
+  @ApiOperation({ summary: '个股实时交易数据详情-可查成交额' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('batch')
+  batch(@Query() params: { symbol: string }) {
+    const { symbol } = params;
+    return this.allStockService.batch(symbol);
+  }
+
+  @ApiOperation({ summary: '沪深股票总览' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('screener')
+  screener() {
+    return this.allStockService.screener();
   }
 }

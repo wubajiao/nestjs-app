@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-08-30 23:00:55
+ * @LastEditTime : 2023-09-15 16:22:00
  */
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
@@ -17,7 +17,7 @@ import { ConfigModule } from './config/config.module';
 import { OrderModule } from './order/order.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
-import { UserEntity } from './user/entities/user.entity';
+// import { UserEntity } from './user/entities/user.entity';
 import { PostsModule } from './posts/posts.module';
 import { TagModule } from './tag/tag.module';
 import { CategoryModule } from './category/category.module';
