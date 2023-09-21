@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-14 18:09:01
+ * @LastEditTime : 2023-09-21 16:30:33
  */
 import {
   Controller,
@@ -107,5 +107,21 @@ export class AllStockController {
   @Get('screener')
   screener() {
     return this.allStockService.screener();
+  }
+
+  @ApiOperation({ summary: '北上、南下资金-日汇总' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('hsgtDate')
+  hsgtDate() {
+    return this.allStockService.syncHsgtDate();
+  }
+
+  @ApiOperation({ summary: '北上、南下资金-分钟级别' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('hsgtMinute')
+  hsgtMinute() {
+    return this.allStockService.syncHsgtMinute();
   }
 }

@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-08-30 23:38:31
+ * @LastEditTime : 2023-09-21 17:10:45
  */
 import {
   Controller,
@@ -19,10 +19,11 @@ import {
 import { StockService } from './stock.service';
 import { CreateStockDto } from './dto/stock.dto';
 import { UpdateStockDto } from './dto/update-stock.dto';
-import { ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/role.guard';
 import { AuthGuard } from '@nestjs/passport';
 
+@ApiTags('自选股票')
 @Controller('stock')
 export class StockController {
   constructor(private readonly stockService: StockService) {}

@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-21 14:44:37
+ * @LastEditTime : 2023-09-21 15:18:14
  */
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -23,6 +23,10 @@ export class TelegramEntity {
   // 标签
   @Column()
   tags: string;
+
+  // 来自平台
+  @Column({ type: 'text' })
+  from: string;
 
   // 发布时间
   @Column({

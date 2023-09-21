@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-19 12:14:02
+ * @LastEditTime : 2023-09-21 17:07:35
  */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -12,7 +12,7 @@ import { Cron } from '@nestjs/schedule';
 import { AllStockEntity } from './entities/allStock.entity';
 import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom } from 'rxjs';
-import { xueqiuHeaders } from './apiHeaders';
+import { xueqiuHeaders, eastmoneyHeaders } from './apiHeaders';
 
 @Injectable()
 export class AllStockService {
@@ -282,5 +282,51 @@ export class AllStockService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
+  }
+
+  // 东方财富：沪深港通-北向资金、南下资金-日记别总数：https://data.eastmoney.com/hsgt/index.html
+  // @Cron('*/60 * * * * *')
+  async syncHsgtDate(): Promise<any> {
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get(
+          `https://datacenter-web.eastmoney.com/api/data/v1/get?reportName=RPT_MUTUAL_QUOTA&columns=TRADE_DATE%2CMUTUAL_TYPE%2CBOARD_TYPE%2CMUTUAL_TYPE_NAME%2CFUNDS_DIRECTION%2CINDEX_CODE%2CINDEX_NAME%2CBOARD_CODE&quoteColumns=status~07~BOARD_CODE%2CdayNetAmtIn~07~BOARD_CODE%2CdayAmtRemain~07~BOARD_CODE%2CdayAmtThreshold~07~BOARD_CODE%2Cf104~07~BOARD_CODE%2Cf105~07~BOARD_CODE%2Cf106~07~BOARD_CODE%2Cf3~03~INDEX_CODE~INDEX_f3%2CnetBuyAmt~07~BOARD_CODE&quoteType=0&pageNumber=1&pageSize=200&sortTypes=1&sortColumns=MUTUAL_TYPE&source=WEB&client=WEB&_=1695269245456`,
+          { headers: eastmoneyHeaders },
+        )
+        .pipe(
+          catchError((_error: any) => {
+            throw 'An error happened!';
+          }),
+        ),
+    );
+    if (data?.code === 0) {
+      return data.result.data;
+    } else {
+      throw new HttpException(data.code, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  // 东方财富：沪深港通-北向资金、南下资金 分钟分级别数据：https://data.eastmoney.com/hsgt/index.html
+  /**
+   * @param symbol ：SH000001,SH601155
+   * @returns data
+   * s2n 北向资金
+   * n2s 南下资金
+   */
+  // @Cron('*/60 * * * * *')
+  async syncHsgtMinute(): Promise<any> {
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get(
+          `https://push2.eastmoney.com/api/qt/kamtbs.rtmin/get?fields1=f1,f2,f3,f4&fields2=f51,f54,f52,f58,f53,f62,f56,f57,f60,f61`,
+          { headers: eastmoneyHeaders },
+        )
+        .pipe(
+          catchError((_error: any) => {
+            throw 'An error happened!';
+          }),
+        ),
+    );
+    return data;
   }
 }
