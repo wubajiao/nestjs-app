@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-15 17:51:22
+ * @LastEditTime : 2023-09-21 14:44:37
  */
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -13,7 +13,7 @@ export class TelegramEntity {
   id: string;
 
   // 标题
-  @Column({ length: 50 })
+  @Column({ length: 255 })
   title: string;
 
   // 内容

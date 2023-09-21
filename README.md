@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-27 14:19:32
+ * @LastEditTime : 2023-09-21 14:28:48
 -->
 
 ## Installation
@@ -20,6 +20,8 @@ $ npm run start
 
 # watch mode
 $ npm run start:dev
+
+### 使用webpack缓存可以把命令换成："start:dev": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
 
 # production mode
 $ npm run start:prod

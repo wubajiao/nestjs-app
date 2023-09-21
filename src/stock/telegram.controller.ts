@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-15 15:58:53
+ * @LastEditTime : 2023-09-21 14:21:48
  */
 import {
   Controller,
@@ -29,8 +29,24 @@ export class TelegramController {
   @ApiOperation({ summary: '爬取财联社电报' })
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
-  @Post('')
-  add(@Param('id') id: string) {
+  @Post('cls')
+  cailianshe() {
     return this.telegramService.syncTelegram();
+  }
+
+  @ApiOperation({ summary: '北上、南下资金-日汇总' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Post('hsgtDate')
+  hsgtDate() {
+    return this.telegramService.syncHsgtDate();
+  }
+
+  @ApiOperation({ summary: '北上、南下资金-分钟级别' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Post('hsgtMinute')
+  hsgtMinute() {
+    return this.telegramService.syncHsgtMinute();
   }
 }
