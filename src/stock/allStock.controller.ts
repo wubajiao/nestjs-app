@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-21 16:30:33
+ * @LastEditTime : 2023-09-21 17:16:38
  */
 import {
   Controller,
@@ -18,10 +18,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AllStockService } from './allStock.service';
-import { ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
 import { RolesGuard } from 'src/auth/role.guard';
 import { AuthGuard } from '@nestjs/passport';
 
+@ApiTags('各站点股票接口转发')
 @Controller('allStock')
 export class AllStockController {
   constructor(private readonly allStockService: AllStockService) {}
