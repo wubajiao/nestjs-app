@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:11:24
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-08-30 22:55:35
+ * @LastEditTime : 2023-09-22 18:01:20
  */
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';

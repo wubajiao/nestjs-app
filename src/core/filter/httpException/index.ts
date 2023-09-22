@@ -3,19 +3,22 @@
  * @Author       : wuhaidong
  * @Date         : 2023-04-27 15:02:47
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-04-28 12:14:45
+ * @LastEditTime : 2023-09-22 17:57:46
  */
 import {
   ExceptionFilter,
   Catch,
   ArgumentsHost,
   HttpException,
+  Logger,
 } from '@nestjs/common';
-
 import { Request, Response } from 'express';
+import * as dayjs from 'dayjs';
+import { LoggerService } from '../../../core/logger/logger.service';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
+  private readonly loggerService = new LoggerService();
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const request = ctx.getRequest<Request>();
@@ -23,11 +26,23 @@ export class HttpExceptionFilter implements ExceptionFilter {
 
     const status = exception.getStatus();
 
-    response.status(status).json({
+    const errorResponse = {
       data: {},
       message: exception.message,
       code: status,
       path: request.url,
-    });
+    };
+
+    // 打印日志
+    this.loggerService.error(errorResponse, '报错信息');
+    Logger.error(
+      `【${dayjs().format('YYYY-MM-DD HH:mm:ss:SSS')}】${request.method} ${
+        request.url
+      }`,
+      JSON.stringify(errorResponse),
+      'HttpExceptionFilter',
+    );
+
+    response.status(status).json(errorResponse);
   }
 }

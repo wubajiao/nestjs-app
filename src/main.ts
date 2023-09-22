@@ -3,10 +3,10 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-22 12:19:56
+ * @LastEditTime : 2023-09-22 15:50:41
  */
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, Logger } from '@nestjs/common';
 import * as cors from 'cors';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
@@ -19,10 +19,17 @@ function MiddleWareAll(req: any, res: any, next: any) {
   next();
 }
 
+const PORT = 4000;
+const PREFIX = '/api';
+export const IS_DEV = true;
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const logger: Logger = new Logger('main.ts');
+  const app = await NestFactory.create(AppModule, {
+    // 开启日志级别打印
+    logger: IS_DEV ? ['log', 'debug', 'error', 'warn'] : ['error', 'warn'],
+  });
   // 设置全局前缀
-  app.setGlobalPrefix('/api');
+  app.setGlobalPrefix(PREFIX);
   // 跨域中间件
   app.use(cors());
   // 全局中间件
@@ -39,17 +46,23 @@ async function bootstrap() {
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('swagger', app, document); // swagger地址：http://localhost:4000/swagger
+  SwaggerModule.setup(`${PREFIX}/swagger`, app, document); // swagger地址：http://localhost:4000/api/swagger
   // 全局管道注入
   app.useGlobalPipes(new ValidationPipe());
   // 启动端口
-  await app.listen(4000);
+  await app.listen(4000, () => {
+    logger.log(
+      `服务已经启动,接口请访问:http://wwww.localhost:${PORT}${PREFIX}`,
+    );
+    logger.log(
+      `服务已经启动,文档请访问:http://wwww.localhost:${PORT}${PREFIX}/swagger`,
+    );
+  });
   // 热更新
   if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => app.close());
   }
-  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 
 bootstrap();

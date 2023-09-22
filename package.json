@@ -84,7 +84,9 @@
     "tsconfig-paths": "4.2.0",
     "typescript": "^5.2.2",
     "webpack": "^5.88.2",
-    "webpack-node-externals": "^3.0.0"
+    "webpack-node-externals": "^3.0.0",
+    "winston": "^3.10.0",
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "jest": {
     "moduleFileExtensions": [

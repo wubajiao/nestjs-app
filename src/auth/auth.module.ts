@@ -16,6 +16,7 @@ import { UserEntity } from '../user/entities/user.entity';
 import { UserModule } from '../user/user.module';
 import { LocalStorage } from './local.strategy';
 import { JwtStorage } from './jwt.strategy';
+import { LoggerService } from '../core/logger/logger.service';
 
 const jwtModule = JwtModule.register({
   secret: 'test123456',
@@ -42,7 +43,7 @@ const jwtModule = JwtModule.register({
     HttpModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStorage, JwtStorage],
+  providers: [AuthService, LocalStorage, JwtStorage, LoggerService],
   exports: [jwtModule],
 })
 export class AuthModule {}

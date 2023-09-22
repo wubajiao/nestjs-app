@@ -3,14 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:11:24
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-11 10:26:55
- */
-/*
- * @Descripttion :
- * @Author       : wuhaidong
- * @Date         : 2023-05-10 12:11:24
- * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-05-10 17:23:24
+ * @LastEditTime : 2023-09-22 18:00:42
  */
 import {
   Controller,
@@ -30,17 +23,23 @@ import { LoginDto } from './dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
 import * as urlencode from 'urlencode';
 import { WechatLoginDto } from './dto/wechat-login.dto';
+import { LoggerService } from '../core/logger/logger.service';
 
 @ApiTags('验证')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly loggerService: LoggerService,
+  ) {}
 
   @ApiOperation({ summary: '登录' })
   @UseGuards(AuthGuard('local'))
   @UseInterceptors(ClassSerializerInterceptor)
   @Post('login')
   async login(@Body() user: LoginDto, @Req() req: any) {
+    // 登录日志收集
+    this.loggerService.info(user, '登录的参数');
     return await this.authService.login(req.user);
   }
 
