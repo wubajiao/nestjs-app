@@ -3,13 +3,13 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-07-20 16:35:49
+ * @LastEditTime : 2023-09-22 12:19:56
  */
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
-import { AppModule } from './app.module';
 import * as cors from 'cors';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './core/filter/httpException';
 import { TransformInterceptor } from './core/interceptor/transform';
 
@@ -49,6 +49,7 @@ async function bootstrap() {
     module.hot.accept();
     module.hot.dispose(() => app.close());
   }
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 
 bootstrap();
