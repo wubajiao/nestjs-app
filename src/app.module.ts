@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-22 10:51:37
+ * @LastEditTime : 2023-09-25 15:38:40
  */
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
@@ -12,9 +12,6 @@ import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handleba
 import * as path from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { GirlModule } from './girl/girl.module';
-import { ConfigModule } from './config/config.module';
-import { OrderModule } from './order/order.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PostsModule } from './posts/posts.module';
@@ -57,11 +54,8 @@ import { StockModule } from './stock/stock.module';
         },
       },
     }),
-    ConfigModule.forRoot('洗浴中心'),
-    GirlModule,
     PostsModule,
     UserModule,
-    OrderModule,
     AuthModule,
     TagModule,
     CategoryModule,
