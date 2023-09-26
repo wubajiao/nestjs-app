@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-22 15:50:41
+ * @LastEditTime : 2023-09-26 16:44:40
  */
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger } from '@nestjs/common';
@@ -19,9 +19,9 @@ function MiddleWareAll(req: any, res: any, next: any) {
   next();
 }
 
-const PORT = 4000;
-const PREFIX = '/api';
-export const IS_DEV = true;
+const PORT = process.env.PORT;
+const PREFIX = process.env.PREFIX;
+export const IS_DEV = process.env.NODE_ENV === 'development';
 async function bootstrap() {
   const logger: Logger = new Logger('main.ts');
   const app = await NestFactory.create(AppModule, {
@@ -39,18 +39,21 @@ async function bootstrap() {
   // 全局注册拦截器
   app.useGlobalInterceptors(new TransformInterceptor());
   // swagger设置
-  const config = new DocumentBuilder()
-    .setTitle('管理后台')
-    .setDescription('管理后台接口文档')
-    .setVersion('1.0')
-    .addBearerAuth()
-    .build();
-  const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup(`${PREFIX}/swagger`, app, document); // swagger地址：http://localhost:4000/api/swagger
+  if (IS_DEV) {
+    const config = new DocumentBuilder()
+      .setTitle('管理后台')
+      .setDescription('管理后台接口文档')
+      .setVersion('1.0')
+      .addBearerAuth()
+      .build();
+    const document = SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup(`${PREFIX}/swagger`, app, document);
+  }
+
   // 全局管道注入
   app.useGlobalPipes(new ValidationPipe());
   // 启动端口
-  await app.listen(4000, () => {
+  await app.listen(PORT, () => {
     logger.log(
       `服务已经启动,接口请访问:http://wwww.localhost:${PORT}${PREFIX}`,
     );
