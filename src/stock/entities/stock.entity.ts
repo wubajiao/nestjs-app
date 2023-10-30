@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-05 16:58:23
+ * @LastEditTime : 2023-10-18 14:50:27
  */
 import {
   Entity,
@@ -26,6 +26,10 @@ export class StockEntity {
   // 股票编码
   @Column()
   code: string;
+
+  // 交易所 'sh': 上海、'sz': 深圳
+  @Column({ default: 0 })
+  exchange: string;
 
   // 分类 0自选、1持仓
   @Column({ default: 0 })

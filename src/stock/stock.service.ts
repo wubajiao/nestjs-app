@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-05 22:09:13
+ * @LastEditTime : 2023-10-19 15:07:58
  */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -41,7 +41,7 @@ export class StockService {
   async findAll(userId: string) {
     const stocks = await this.stockRepository.find({
       where: { user: { id: userId } },
-      select: ['id', 'name', 'code', 'holdNumber', 'cost'],
+      select: ['id', 'name', 'code', 'holdNumber', 'cost', 'exchange'],
     });
     return stocks;
   }
@@ -49,7 +49,7 @@ export class StockService {
   async findAllHold(userId: string) {
     const stocks = await this.stockRepository.find({
       where: { user: { id: userId }, type: 1 },
-      select: ['id', 'name', 'code', 'holdNumber', 'cost'],
+      select: ['id', 'name', 'code', 'holdNumber', 'cost', 'exchange'],
     });
     return stocks;
   }
