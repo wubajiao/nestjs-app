@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-21 17:16:38
+ * @LastEditTime : 2023-10-11 16:55:44
  */
 import {
   Controller,
@@ -31,13 +31,21 @@ export class AllStockController {
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Post('syncStockDB')
-  syncStockDB(@Param('id') id: string) {
+  syncStockDB() {
     return this.allStockService.syncStockDB();
   }
 
-  @ApiOperation({ summary: '获取股票实时数据' })
+  @ApiOperation({ summary: '更新沪深两市股票数据库' })
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('query')
+  queryStockByKeyword(@Query('keyword') keyword: string) {
+    return this.allStockService.queryStockByKeyword(keyword);
+  }
+
+  @ApiOperation({ summary: '获取股票实时数据' })
+  // @ApiBearerAuth()
+  // @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('realtime')
   realtime(@Query('symbol') symbol: string) {
     return this.allStockService.realtime(symbol);

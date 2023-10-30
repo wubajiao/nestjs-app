@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-21 17:07:35
+ * @LastEditTime : 2023-10-11 16:52:32
  */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -72,6 +72,16 @@ export class AllStockService {
     }
 
     return data;
+  }
+
+  // 通过关键字查询股票
+  async queryStockByKeyword(keyword: string): Promise<any> {
+    const queryBuilder = this.allStockRepository
+      .createQueryBuilder('all_stock')
+      .where('all_stock.name LIKE :keyword OR all_stock.code LIKE :keyword', {
+        keyword: `%${keyword}%`,
+      });
+    return await queryBuilder.getMany();
   }
 
   // 获取股票实时数据
