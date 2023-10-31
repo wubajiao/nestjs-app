@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-05-10 12:11:24
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-22 18:01:20
+ * @LastEditTime : 2023-10-30 14:47:25
  */
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -43,7 +43,15 @@ export class AuthService {
       role: user.role,
     });
 
-    return token;
+    const userInfo = {
+      id: user.id,
+      name: user.name,
+      account: user.account,
+      email: user.email,
+      avatar: user.avatar,
+    };
+
+    return { token, user: userInfo };
   }
 
   async getUser(user) {
