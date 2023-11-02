@@ -3,41 +3,41 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-21 14:28:48
+ * @LastEditTime : 2023-10-31 22:50:54
 -->
 
 ## Installation
 
 ```bash
-$ npm install
+$ yarn
 ```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
+$ yarn start
 
 # watch mode
-$ npm run start:dev
+$ yarn start:dev
 
 ### 使用webpack缓存可以把命令换成："start:dev": "nest build --webpack --webpackPath webpack-hmr.config.js --watch",
 
 # production mode
-$ npm run start:prod
+$ yarn start:prod
 ```
 
 ## Test
 
 ```bash
 # unit tests
-$ npm run test
+$ yarn test
 
 # e2e tests
-$ npm run test:e2e
+$ yarn test:e2e
 
 # test coverage
-$ npm run test:cov
+$ yarn test:cov
 ```
 
 ### nest g

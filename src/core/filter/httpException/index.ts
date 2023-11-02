@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-04-27 15:02:47
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-22 17:57:46
+ * @LastEditTime : 2023-10-31 20:36:18
  */
 import {
   ExceptionFilter,
@@ -25,10 +25,11 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse<Response>();
 
     const status = exception.getStatus();
+    const res = exception.getResponse() as { message: string[] };
 
     const errorResponse = {
-      data: {},
-      message: exception.message,
+      data: null,
+      message: res?.message?.join ? res?.message?.join(',') : exception.message, // exception.message,
       code: status,
       path: request.url,
     };
