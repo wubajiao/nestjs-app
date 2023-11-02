@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-21 15:18:14
+ * @LastEditTime : 2023-11-01 23:16:26
  */
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -47,4 +47,12 @@ export class TelegramEntity {
     default: () => 'CURRENT_TIMESTAMP',
   })
   updateTime: Date;
+
+  toResponseObject() {
+    const responseObj = {
+      ...this,
+    };
+
+    return responseObj;
+  }
 }

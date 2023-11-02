@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-21 16:29:15
+ * @LastEditTime : 2023-11-01 23:18:06
  */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -78,5 +78,21 @@ export class TelegramService {
     });
 
     return telegrams;
+  }
+
+  // 获取电报列表
+  async findAll(body): Promise<any> {
+    const qb = await this.telegramRepository
+      .createQueryBuilder('telegram')
+      .orderBy('telegram.publish_time', 'DESC');
+
+    const count = await qb.getCount();
+    const { pageNum = 1, pageSize = 20 } = body;
+    qb.limit(pageSize);
+    qb.offset(pageSize * (pageNum - 1));
+
+    const telegrams: any = await qb.getMany();
+    const result = telegrams.map((item: any) => item.toResponseObject());
+    return { list: result, count: count };
   }
 }

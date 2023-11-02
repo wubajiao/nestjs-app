@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-09-14 16:07:55
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-21 12:26:36
+ * @LastEditTime : 2023-11-01 22:30:31
  */
 
 // 雪球 headers
@@ -11,7 +11,7 @@ export const xueqiuHeaders = {
   Host: 'stock.xueqiu.com',
   Referer: 'https://xueqiu.com/',
   Accept: 'application/json',
-  Cookie: 'xq_a_token=b0e9bcf7d6096be99ca9b45b9e938949e929c316;',
+  Cookie: 'xq_a_token=b809a98e39f06030801848ffcdd52e4e1fe731b4;',
   'User-Agent':
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36',
   'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',

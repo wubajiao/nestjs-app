@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-21 17:10:17
+ * @LastEditTime : 2023-11-01 22:59:48
  */
 import {
   Controller,
@@ -19,6 +19,7 @@ import {
 } from '@nestjs/common';
 import { TelegramService } from './telegram.service';
 import { ApiTags, ApiOperation, ApiBearerAuth } from '@nestjs/swagger';
+import { TelegramDto } from './dto/telegram.dto';
 import { RolesGuard } from 'src/auth/role.guard';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -33,5 +34,15 @@ export class TelegramController {
   @Get('cls')
   cailianshe() {
     return this.telegramService.syncTelegram();
+  }
+
+  /**
+   * 获取电报列表，先只取前20条
+   * TODO: 分页获取
+   */
+  @ApiOperation({ summary: '获取电报列表' })
+  @Get('/list')
+  async findAll(@Body() body): Promise<TelegramDto> {
+    return await this.telegramService.findAll(body);
   }
 }
