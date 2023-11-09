@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-10-11 16:52:32
+ * @LastEditTime : 2023-11-09 15:34:06
  */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -110,21 +110,6 @@ export class AllStockService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-  }
-
-  // 涨跌统计
-  async upDownNumber(): Promise<any> {
-    const { data } = await firstValueFrom(
-      this.httpService
-        .get(`http://api.mairui.club/zs/lsgl/18d643330de55260b`)
-        .pipe(
-          catchError((_error: any) => {
-            throw 'An error happened!';
-          }),
-        ),
-    );
-
-    return data;
   }
 
   // 股东数变化
@@ -239,7 +224,7 @@ export class AllStockService {
   }
 
   /**
-   * @description: 可以查沪、深、创业板、科创板成交额
+   * @description: 可以查沪、深、创业板、科创板、个股成交额，包括港股
    * @param symbol: 股票代码 SH000001,SZ399001,SZ399006,SH000688
    * @return {*}
    */
@@ -316,8 +301,8 @@ export class AllStockService {
     }
   }
 
-  // 东方财富：沪深港通-北向资金、南下资金 分钟分级别数据：https://data.eastmoney.com/hsgt/index.html
   /**
+   * @from 东方财富：沪深港通-北向资金、南下资金 分钟分级别数据：https://data.eastmoney.com/hsgt/index.html
    * @param symbol ：SH000001,SH601155
    * @returns data
    * s2n 北向资金
@@ -338,5 +323,48 @@ export class AllStockService {
         ),
     );
     return data;
+  }
+
+  /**
+   * @form 东方财富：https: //emdatah5.eastmoney.com/dc/nxfxb/index
+   * @param symbol ：SH000001,SH601155
+   * @returns data
+   * type: 0当日实时数据、近30天每日数据
+   */
+  async upDownNumber(): Promise<any> {
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get(`https://emdatah5.eastmoney.com/dc/NXFXB/GetUpDownData?type=0`)
+        .pipe(
+          catchError((_error: any) => {
+            throw 'An error happened!';
+          }),
+        ),
+    );
+
+    return data;
+  }
+
+  /**
+   * @form 东方财富：https: //data.eastmoney.com/zjlx/dpzjlx.html
+   * @param symbol ：SH000001,SH601155
+   * @returns data
+   * type: 0当日实时数据、近30天每日数据
+   */
+  async marketFlow(): Promise<any> {
+    const timestamp = new Date().getTime();
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get(
+          `https://push2.eastmoney.com/api/qt/stock/fflow/kline/get?lmt=0&klt=1&fields1=f1%2Cf2%2Cf3%2Cf7&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61%2Cf62%2Cf63%2Cf64%2Cf65&ut=b2884a393a59ad64002292a3e90d46a5&secid=1.000001&secid2=0.399001&_=${timestamp}`,
+        )
+        .pipe(
+          catchError((_error: any) => {
+            throw 'An error happened!';
+          }),
+        ),
+    );
+
+    return data.data;
   }
 }

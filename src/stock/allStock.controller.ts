@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-10-11 16:55:44
+ * @LastEditTime : 2023-11-09 14:54:27
  */
 import {
   Controller,
@@ -132,5 +132,13 @@ export class AllStockController {
   @Get('hsgtMinute')
   hsgtMinute() {
     return this.allStockService.syncHsgtMinute();
+  }
+
+  @ApiOperation({ summary: '大盘资金流向' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('marketFlow')
+  marketFlow() {
+    return this.allStockService.marketFlow();
   }
 }
