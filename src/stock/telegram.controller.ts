@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-11-01 22:59:48
+ * @LastEditTime : 2023-11-02 22:17:25
  */
 import {
   Controller,
@@ -42,7 +42,7 @@ export class TelegramController {
    */
   @ApiOperation({ summary: '获取电报列表' })
   @Get('/list')
-  async findAll(@Body() body): Promise<TelegramDto> {
-    return await this.telegramService.findAll(body);
+  async findAll(@Query() params): Promise<TelegramDto> {
+    return await this.telegramService.findAll(params);
   }
 }

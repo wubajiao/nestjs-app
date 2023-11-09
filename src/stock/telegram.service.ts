@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-11-01 23:18:06
+ * @LastEditTime : 2023-11-02 22:19:52
  */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -81,13 +81,13 @@ export class TelegramService {
   }
 
   // 获取电报列表
-  async findAll(body): Promise<any> {
+  async findAll(params: any): Promise<any> {
     const qb = await this.telegramRepository
       .createQueryBuilder('telegram')
       .orderBy('telegram.publish_time', 'DESC');
 
     const count = await qb.getCount();
-    const { pageNum = 1, pageSize = 20 } = body;
+    const { pageNum = 1, pageSize = 20 } = params;
     qb.limit(pageSize);
     qb.offset(pageSize * (pageNum - 1));
 
