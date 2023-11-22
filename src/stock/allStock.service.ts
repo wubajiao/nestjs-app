@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-11-09 15:34:06
+ * @LastEditTime : 2023-11-09 22:16:16
  */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -84,8 +84,9 @@ export class AllStockService {
     return await queryBuilder.getMany();
   }
 
-  // 获取股票实时数据
   /**
+   * @description 获取股票实时数据
+   * @from 雪球
    * @param symbol ：SH000001,SH601155
    * @returns
    */
@@ -103,6 +104,34 @@ export class AllStockService {
         ),
     );
     if (data.error_code === 0) {
+      return data?.data;
+    } else {
+      throw new HttpException(
+        data.error_code,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  /**
+   * @description 指数实时数据，包含涨跌数
+   * @from 东方财富: https://data.eastmoney.com/bkzj/gn.html
+   * @returns
+   */
+  async indexRealtime(): Promise<any> {
+    const timestamp = new Date().getTime();
+    const { data } = await firstValueFrom(
+      this.httpService
+        .get(
+          `https://push2.eastmoney.com/api/qt/ulist.np/get?fltt=2&secids=1.000001%2C0.399001%2C0.399006&fields=f1%2Cf2%2Cf3%2Cf4%2Cf6%2Cf12%2Cf13%2Cf104%2Cf105%2Cf106&ut=b2884a393a59ad64002292a3e90d46a5&_=${timestamp}`,
+        )
+        .pipe(
+          catchError((_error: any) => {
+            throw 'An error happened!';
+          }),
+        ),
+    );
+    if (data) {
       return data?.data;
     } else {
       throw new HttpException(

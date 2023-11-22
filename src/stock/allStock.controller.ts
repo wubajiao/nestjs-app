@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2023-08-29 12:07:09
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-11-09 14:54:27
+ * @LastEditTime : 2023-11-09 16:52:14
  */
 import {
   Controller,
@@ -44,11 +44,19 @@ export class AllStockController {
   }
 
   @ApiOperation({ summary: '获取股票实时数据' })
-  // @ApiBearerAuth()
-  // @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
   @Get('realtime')
   realtime(@Query('symbol') symbol: string) {
     return this.allStockService.realtime(symbol);
+  }
+
+  @ApiOperation({ summary: 'A股指数实时数据' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard('jwt'), RolesGuard)
+  @Get('indexRealtime')
+  indexRealtime() {
+    return this.allStockService.indexRealtime();
   }
 
   @ApiOperation({ summary: '涨跌股票统计' })
