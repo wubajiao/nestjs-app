@@ -3,7 +3,7 @@
  * @Author       : wuhaidong
  * @Date         : 2022-12-15 17:14:31
  * @LastEditors  : wuhaidong
- * @LastEditTime : 2023-09-26 16:44:40
+ * @LastEditTime : 2023-12-06 17:34:24
  */
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger } from '@nestjs/common';
@@ -54,11 +54,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   // 启动端口
   await app.listen(PORT, () => {
+    logger.log(`服务已经启动,接口请访问:http://www.localhost:${PORT}${PREFIX}`);
     logger.log(
-      `服务已经启动,接口请访问:http://wwww.localhost:${PORT}${PREFIX}`,
-    );
-    logger.log(
-      `服务已经启动,文档请访问:http://wwww.localhost:${PORT}${PREFIX}/swagger`,
+      `服务已经启动,文档请访问:http://www.localhost:${PORT}${PREFIX}/swagger`,
     );
   });
   // 热更新
